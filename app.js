@@ -25,6 +25,8 @@ mongoose.connect(connectionString);
 mongoose.promise=global.promise;
 
 app.post('/', (req, res) => {
+  
+ 
   let requestbody = req.body;
   let user = new userModel();
   user.userName = requestbody.userName;
@@ -42,53 +44,54 @@ app.post('/', (req, res) => {
     res.send(error.toString());
 })
 
-  if(requestbody.long == undefined || requestbody.lat == undefined){
-
-    //res.send('Please provide long and lat')
- }
-// res.send(checkRadius(requestbody.lat,requestbody.long));
   
 });
 
 
 
 app.get('/', (req, res) => {
-  console.log(req.query);
- let near = [parseFloat(req.query.long),parseFloat(req.query.lat)]
- 
- userModel.aggregate(
-    [
-        { 
-          "$geoNear": {
-            "near": {
-                "type": "Point",
-                "coordinates": [parseFloat(req.query.long),parseFloat(req.query.lat)]
-            }, 
-            distanceField: "distance.calculated", 
-            maxDistance: 2000, 
-            spherical :true
-        }
-      }
-    ],
-    function(err,results) {
-      console.log(results);
-      if(err == null){
-      let response = {};
-      response.status="200";
-      response.message="Success";           
-      response.data=results;
-      return res.json(response);
-    }
-    else{
-      let response = {};
-      response.status="404";
-      response.message="Failure";           
-      response.data=err;
-      return res.json(response);
-    }
-  }
+  if(req.query.long == undefined || req.query.lat == undefined){
+
+    res.send('Please provide long and lat')
+ }
+ res.send(checkRadius(req.query.lat,req.query.long));
   
-)
+//   console.log(req.query);
+//  let near = [parseFloat(req.query.long),parseFloat(req.query.lat)]
+ 
+//  userModel.aggregate(
+//     [
+//         { 
+//           "$geoNear": {
+//             "near": {
+//                 "type": "Point",
+//                 "coordinates": [parseFloat(req.query.long),parseFloat(req.query.lat)]
+//             }, 
+//             distanceField: "distance.calculated", 
+//             maxDistance: 2000, 
+//             spherical :true
+//         }
+//       }
+//     ],
+//     function(err,results) {
+//       console.log(results);
+//       if(err == null){
+//       let response = {};
+//       response.status="200";
+//       response.message="Success";           
+//       response.data=results;
+//       return res.json(response);
+//     }
+//     else{
+//       let response = {};
+//       response.status="404";
+//       response.message="Failure";           
+//       response.data=err;
+//       return res.json(response);
+//     }
+//   }
+  
+// )
 });
 
 checkRadius = (lat,long) =>{
