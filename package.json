@@ -1,0 +1,19 @@
+{
+  "name": "rnd",
+  "version": "1.0.0",
+  "description": "GeoLocation work",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Haroon Zafar",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "geolib": "^2.0.24",
+    "mongoose": "^5.2.4"
+  }
+}
